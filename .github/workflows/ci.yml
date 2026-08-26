@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+
+    env:
+      # Prisma needs a URL at generate time; no database is contacted here.
+      DATABASE_URL: "file:./ci.db"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # `npm ci` runs the postinstall that generates the Prisma client, so the
+      # typecheck below sees real model types rather than a missing module.
+      - run: npm ci
+
+      # Fails if prisma/schema.postgres.prisma was not regenerated after a
+      # schema change — the drift would otherwise only surface at deploy time.
+      - name: Schema in sync
+        run: npm run db:check-schema
+
+      - name: Typecheck
+        run: npx tsc --noEmit
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm test
+
+      - name: Build
+        run: npm run build

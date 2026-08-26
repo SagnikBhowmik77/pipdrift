@@ -1,0 +1,527 @@
+<title>Saver Segment Shortlist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=Public+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap">
+
+<style>
+  :root {
+    color-scheme: light;
+
+    --paper:      #F2F5F3;
+    --surface:    #FFFFFF;
+    --ink:        #16211C;
+    --ink-soft:   #4A5A52;
+    --ink-mute:   #6E7F76;
+    --rule:       #D6E0DA;
+    --accent:     #0F6B52;
+    --accent-soft:#E2EFE9;
+    --amber:      #8A5A10;
+    --amber-soft: #F4EADA;
+
+    --measure: 68ch;
+    --step--1: clamp(0.78rem, 0.76rem + 0.1vw, 0.84rem);
+    --step-0:  clamp(1rem, 0.97rem + 0.15vw, 1.06rem);
+    --step-1:  clamp(1.2rem, 1.12rem + 0.4vw, 1.4rem);
+    --step-2:  clamp(1.5rem, 1.34rem + 0.8vw, 2rem);
+    --step-3:  clamp(2.1rem, 1.7rem + 2vw, 3.2rem);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --paper:      #101815;
+      --surface:    #17211D;
+      --ink:        #E7EEE9;
+      --ink-soft:   #A9BAB1;
+      --ink-mute:   #849A8F;
+      --rule:       #2A3830;
+      --accent:     #5CCFA5;
+      --accent-soft:#1B2E27;
+      --amber:      #D4A247;
+      --amber-soft: #2C2618;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --paper:      #101815;
+    --surface:    #17211D;
+    --ink:        #E7EEE9;
+    --ink-soft:   #A9BAB1;
+    --ink-mute:   #849A8F;
+    --rule:       #2A3830;
+    --accent:     #5CCFA5;
+    --accent-soft:#1B2E27;
+    --amber:      #D4A247;
+    --amber-soft: #2C2618;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: var(--step-0);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 62rem;
+    margin: 0 auto;
+    padding: clamp(2rem, 5vw, 4.5rem) clamp(1.1rem, 4vw, 2.5rem) 5rem;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .eyebrow {
+    font-size: var(--step--1);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 0.9rem;
+  }
+
+  h1 {
+    font-family: Newsreader, Georgia, serif;
+    font-size: var(--step-3);
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+    margin: 0 0 1rem;
+  }
+
+  .standfirst {
+    font-family: Newsreader, Georgia, serif;
+    font-size: var(--step-1);
+    line-height: 1.5;
+    color: var(--ink-soft);
+    max-width: var(--measure);
+    margin: 0;
+  }
+
+  .masthead-meta {
+    margin-top: 1.8rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 2rem;
+    font-size: var(--step--1);
+    color: var(--ink-mute);
+  }
+
+  .masthead-meta b { color: var(--ink-soft); font-weight: 500; }
+
+  h2 {
+    font-family: Newsreader, Georgia, serif;
+    font-size: var(--step-2);
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+    margin: 0 0 1rem;
+  }
+
+  h3 {
+    font-size: var(--step--1);
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin: 0 0 0.7rem;
+  }
+
+  p { max-width: var(--measure); margin: 0 0 1rem; }
+  p:last-child { margin-bottom: 0; }
+
+  .scroller { overflow-x: auto; }
+
+  table {
+    width: 100%;
+    min-width: 34rem;
+    border-collapse: collapse;
+    font-size: var(--step--1);
+  }
+
+  caption {
+    text-align: left;
+    color: var(--ink-mute);
+    font-size: var(--step--1);
+    padding-bottom: 0.7rem;
+  }
+
+  th, td {
+    text-align: left;
+    padding: 0.75rem 1rem 0.75rem 0;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+
+  thead th {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    border-bottom-width: 2px;
+  }
+
+  td:last-child, th:last-child { padding-right: 0; }
+  tbody tr:last-child td { border-bottom: none; }
+
+  .rank {
+    font-family: Newsreader, Georgia, serif;
+    font-size: 1.6rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--accent);
+    width: 2.5rem;
+  }
+
+  .chip {
+    display: inline-block;
+    white-space: nowrap;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+
+  .chip.moderate { background: var(--amber-soft); color: var(--amber); }
+
+  code, .handle {
+    font-family: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+    font-size: 0.88em;
+  }
+
+  .handle { color: var(--ink); font-weight: 500; }
+
+  .segment {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: clamp(1.4rem, 3vw, 2.2rem);
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+  }
+
+  .segment-head {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .segment-head h2 { margin: 0; flex: 1 1 16rem; }
+
+  .verdict {
+    border-left: 2px solid var(--accent);
+    padding-left: 1rem;
+    font-family: Newsreader, Georgia, serif;
+    font-size: var(--step-1);
+    line-height: 1.45;
+    color: var(--ink-soft);
+    max-width: var(--measure);
+  }
+
+  .two-up {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 1.6rem 2.5rem;
+  }
+
+  ul { margin: 0; padding-left: 1.1rem; display: flex; flex-direction: column; gap: 0.5rem; }
+  li { max-width: 42ch; }
+  li::marker { color: var(--ink-mute); }
+
+  .note {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: clamp(1.4rem, 3vw, 2.2rem);
+  }
+
+  .note.caution { border-color: var(--amber); }
+
+  footer {
+    border-top: 1px solid var(--rule);
+    padding-top: 1.5rem;
+    font-size: var(--step--1);
+    color: var(--ink-mute);
+  }
+
+  a { color: var(--accent); }
+  a:focus-visible, th:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+</style>
+
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">Pipdrift · audience research</p>
+    <h1>Saver Segment Shortlist</h1>
+    <p class="standfirst">Four segments worth pursuing, ranked by how well each one actually responds to Pipdrift&rsquo;s wedge &mdash; an inspectable, forkable rebalancing engine &mdash; rather than by how big each one is.</p>
+    <div class="masthead-meta">
+      <span><b>Prepared</b> 21 August 2026</span>
+      <span><b>Ranked by</b> fit with transparency + forkable engine</span>
+      <span><b>Method</b> desk research &mdash; verify before outreach</span>
+    </div>
+  </header>
+
+  <section>
+    <h2>The ranking</h2>
+    <p>The two technical segments rank highest because they are the only ones for whom &ldquo;fork the agent pipeline&rdquo; is a feature rather than a trust signal. The split between them is deposits versus evangelism.</p>
+    <div class="scroller">
+      <table>
+        <caption>Ranked by responsiveness to Pipdrift&rsquo;s differentiator, not by segment size.</caption>
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Segment</th>
+            <th scope="col">Fit</th>
+            <th scope="col">Why it lands here</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="rank">1</td>
+            <th scope="row">Junior devs &amp; early-career engineers</th>
+            <td><span class="chip">Strong</span></td>
+            <td>The only segment with both the literacy to value an open engine and the income to fund it. Converts and pays.</td>
+          </tr>
+          <tr>
+            <td class="rank">2</td>
+            <th scope="row">CS &amp; engineering students</th>
+            <td><span class="chip">Strong</span></td>
+            <td>Will actually fork it and plug in custom signals. Low deposits now, but they are the distribution channel into segment 1.</td>
+          </tr>
+          <tr>
+            <td class="rank">3</td>
+            <th scope="row">FIRE-curious Millennials</th>
+            <td><span class="chip moderate">Moderate</span></td>
+            <td>Fee-obsessed and allocation-literate, so the no-advisory-drag pitch lands. Mostly non-technical &mdash; open source reads as trust, not utility.</td>
+          </tr>
+          <tr>
+            <td class="rank">4</td>
+            <th scope="row">Asia-based Gen Z expat savers</th>
+            <td><span class="chip moderate">Moderate</span></td>
+            <td>Largest long-term prize and the mission&rsquo;s stated target, but access and FX friction outrank transparency in what wins them.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="segment">
+    <div class="segment-head">
+      <span class="rank">1</span>
+      <h2>Junior devs &amp; early-career engineers</h2>
+      <span class="chip">Strong fit</span>
+    </div>
+
+    <p class="verdict">First real salary, no advisor, deep suspicion of anything they can&rsquo;t inspect. They read the repo before they read the marketing site.</p>
+
+    <div class="scroller">
+      <table>
+        <caption>Where they cluster</caption>
+        <thead>
+          <tr><th scope="col">Platform</th><th scope="col">Channel</th><th scope="col">Note</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Reddit</td><td><span class="handle">r/ExperiencedDevs</span></td><td>Senior-skewed; salary and comp threads are where money talk surfaces.</td></tr>
+          <tr><td>Reddit</td><td><span class="handle">r/cscareerquestions</span></td><td>High volume, heavy first-paycheck and 401k questions.</td></tr>
+          <tr><td>Reddit</td><td><span class="handle">r/financialindependence</span></td><td>Overlaps segment 3; the technical half of that audience lives here.</td></tr>
+          <tr><td>Hacker News</td><td><span class="handle">news.ycombinator.com</span></td><td>Show HN is the single highest-leverage launch surface for a forkable engine.</td></tr>
+          <tr><td>Lobsters</td><td><span class="handle">lobste.rs</span></td><td>Smaller, stricter, invite-only. Quality over reach.</td></tr>
+          <tr><td>Blind</td><td><span class="handle">teamblind.com</span></td><td>Verified-employer app; compensation and investing threads are candid.</td></tr>
+          <tr><td>Newsletter</td><td><span class="handle">The Pragmatic Engineer</span>, <span class="handle">TLDR</span></td><td>Sponsorship reaches exactly this segment at scale.</td></tr>
+          <tr><td>Discord</td><td>Language and framework servers &mdash; <span class="handle">Reactiflux</span>, <span class="handle">The Programmer&rsquo;s Hangout</span></td><td>Off-topic and career channels only; product talk in main channels gets removed.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="two-up">
+      <div>
+        <h3>What wins them</h3>
+        <ul>
+          <li>A public repo with the rebalancing logic legible in one sitting.</li>
+          <li>Explicit drift thresholds they can set themselves, versus &ldquo;proprietary heuristics.&rdquo;</li>
+          <li>An API they can call from their own scripts.</li>
+          <li>Honest fee math against a 0.25% AUM incumbent.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>What loses them</h3>
+        <ul>
+          <li>Any gap between what the marketing claims and what the code does.</li>
+          <li>Waitlists, invite gates, or an email wall before the sandbox.</li>
+          <li>Vague custody and regulatory answers.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="segment">
+    <div class="segment-head">
+      <span class="rank">2</span>
+      <h2>CS &amp; engineering students</h2>
+      <span class="chip">Strong fit</span>
+    </div>
+
+    <p class="verdict">The people who will genuinely fork the pipeline and wire in a sentiment source for a weekend project &mdash; and then bring it to work two years later.</p>
+
+    <div class="scroller">
+      <table>
+        <caption>Where they cluster</caption>
+        <thead>
+          <tr><th scope="col">Platform</th><th scope="col">Channel</th><th scope="col">Note</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Reddit</td><td><span class="handle">r/csMajors</span>, <span class="handle">r/learnprogramming</span></td><td>Project-showcase threads are the natural entry point.</td></tr>
+          <tr><td>Reddit</td><td><span class="handle">r/algotrading</span></td><td>Small but precisely on-topic for an agent pipeline.</td></tr>
+          <tr><td>Discord</td><td>University CS servers; <span class="handle">The Programmer&rsquo;s Hangout</span>, <span class="handle">Devcord</span></td><td>Per-server rules vary wildly; ask a mod first.</td></tr>
+          <tr><td>GitHub</td><td>Topic pages, <span class="handle">good first issue</span> labels</td><td>The forkable angle sells itself here &mdash; make contribution paths obvious.</td></tr>
+          <tr><td>Devpost / hackathons</td><td>Fintech and open-data tracks</td><td>Offer the engine as hackathon infrastructure.</td></tr>
+          <tr><td>Campus</td><td>Investment clubs, quant societies, ACM chapters</td><td>Slow but high-trust; one talk seeds a whole cohort.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="two-up">
+      <div>
+        <h3>What wins them</h3>
+        <ul>
+          <li>A genuinely runnable local sandbox with seeded data and no signup.</li>
+          <li>A documented module interface for adding a signal source or bucket.</li>
+          <li>Something impressive enough to put in a portfolio.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>What loses them</h3>
+        <ul>
+          <li>Anything requiring a funded account to try.</li>
+          <li>Minimum deposits &mdash; most have three figures to invest, not four.</li>
+          <li>A README that stops at &ldquo;npm install&rdquo;.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="segment">
+    <div class="segment-head">
+      <span class="rank">3</span>
+      <h2>FIRE-curious Millennials</h2>
+      <span class="chip moderate">Moderate fit</span>
+    </div>
+
+    <p class="verdict">Already allocation-literate and already angry about fees. They don&rsquo;t want to read your code &mdash; they want proof that someone could.</p>
+
+    <div class="scroller">
+      <table>
+        <caption>Where they cluster</caption>
+        <thead>
+          <tr><th scope="col">Platform</th><th scope="col">Channel</th><th scope="col">Note</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Reddit</td><td><span class="handle">r/financialindependence</span>, <span class="handle">r/FIRE</span></td><td>The core. Strict self-promotion rules &mdash; see the caution below.</td></tr>
+          <tr><td>Reddit</td><td><span class="handle">r/leanfire</span>, <span class="handle">r/fatFIRE</span></td><td>Ends of the same barbell; leanfire is closer to a round-up product.</td></tr>
+          <tr><td>Reddit</td><td><span class="handle">r/Bogleheads</span>, <span class="handle">r/investing</span></td><td>Three-fund orthodoxy maps almost exactly onto the three default buckets.</td></tr>
+          <tr><td>Reddit</td><td><span class="handle">r/personalfinance</span></td><td>Huge reach, near-total promotion ban. Treat as listening, not posting.</td></tr>
+          <tr><td>Forum</td><td><span class="handle">bogleheads.org</span>, <span class="handle">ChooseFI</span> community</td><td>Long-form, high-trust, allergic to marketing.</td></tr>
+          <tr><td>Newsletter / podcast</td><td><span class="handle">ChooseFI</span>, <span class="handle">Mad Fientist</span>, <span class="handle">Morning Brew</span></td><td>Sponsorship and guest spots beat organic posting here.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="two-up">
+      <div>
+        <h3>What wins them</h3>
+        <ul>
+          <li>Total lifetime fee drag modelled honestly against Acorns&rsquo; flat fee and a 0.25% AUM robo.</li>
+          <li>Tax treatment answered plainly, including what Pipdrift does <em>not</em> do.</li>
+          <li>Open-source as an auditability claim, not a developer feature.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>What loses them</h3>
+        <ul>
+          <li>Any whiff of gamification or engagement mechanics.</li>
+          <li>Missing tax-loss harvesting versus Wealthfront and Betterment.</li>
+          <li>Round-ups framed as the product &mdash; they see them as a gimmick for beginners.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="segment">
+    <div class="segment-head">
+      <span class="rank">4</span>
+      <h2>Asia-based Gen Z expat savers</h2>
+      <span class="chip moderate">Moderate fit</span>
+    </div>
+
+    <p class="verdict">The mission&rsquo;s headline user. Ranked fourth not because the opportunity is small but because transparency is not the thing standing between them and a portfolio &mdash; access is.</p>
+
+    <div class="scroller">
+      <table>
+        <caption>Where they cluster</caption>
+        <thead>
+          <tr><th scope="col">Platform</th><th scope="col">Channel</th><th scope="col">Note</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Reddit</td><td><span class="handle">r/phinvest</span></td><td>Philippines; unusually active and product-curious.</td></tr>
+          <tr><td>Reddit</td><td><span class="handle">r/SingaporeFI</span>, <span class="handle">r/singaporefi</span></td><td>High income, high financial literacy, strong FIRE overlap.</td></tr>
+          <tr><td>Reddit</td><td><span class="handle">r/MalaysianPF</span>, <span class="handle">r/IndiaInvestments</span></td><td>Each has distinct local-product norms; generic pitches fail.</td></tr>
+          <tr><td>Reddit</td><td><span class="handle">r/ExpatFIRE</span>, <span class="handle">r/eupersonalfinance</span></td><td>Cross-border tax and access questions dominate.</td></tr>
+          <tr><td>Discord / Telegram</td><td>Local investing and expat-community servers</td><td>Where the real conversation happens; hard to find, harder to join cold.</td></tr>
+          <tr><td>Other</td><td>Xiaohongshu, LINE, and local-language finance creators</td><td>Requires native-language partners, not translated copy.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="two-up">
+      <div>
+        <h3>What wins them</h3>
+        <ul>
+          <li>Genuine access to US-listed ETFs without a local brokerage relationship.</li>
+          <li>Very low minimums and transparent FX cost.</li>
+          <li>Local-language material from someone in the community.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>What loses them</h3>
+        <ul>
+          <li>Card round-ups that assume a US card rail and US bank linkage.</li>
+          <li>Unanswered questions about local tax and regulatory status.</li>
+          <li>English-only marketing that ignores local incumbents.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="note caution">
+    <h2>Before you post anywhere</h2>
+    <p>The highest-value channels here are also the strictest. Most large personal-finance and FIRE subreddits ban self-promotion and referral links outright, and moderators enforce it aggressively &mdash; a single bad post can get the domain blacklisted across a network of related subreddits, which is unrecoverable.</p>
+    <ul>
+      <li><strong>Read each community&rsquo;s rules and message the mods first.</strong> Several allow tool posts in a dedicated thread or on a set weekday.</li>
+      <li><strong>Lead with the open engine, not the product.</strong> A repo and a technical writeup survive promotion filters that a signup page will not.</li>
+      <li><strong>Disclose affiliation every time.</strong> Undisclosed founder posting is the fastest way to lose a channel permanently.</li>
+      <li><strong>Watch the regulatory line.</strong> The SEC has tightened rules on &ldquo;spare change&rdquo; solicitation language &mdash; marketing copy in these forums is still marketing copy.</li>
+    </ul>
+  </section>
+
+  <footer>
+    <p>Segments and channels compiled from desk research, not a live audit. Channel names are stable, but activity levels, moderation rules, and promotion policies change &mdash; confirm each community&rsquo;s current rules immediately before any outreach, and treat the ranking as a starting hypothesis to test rather than a finding.</p>
+  </footer>
+
+</div>

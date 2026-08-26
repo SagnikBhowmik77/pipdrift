@@ -1,0 +1,158 @@
+// GENERATED FILE — DO NOT EDIT.
+// Produced from prisma/schema.prisma by scripts/sync-schema.mjs.
+// Edit the source schema, then run: npm run db:sync-schema
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+/// A saver. Identity is a real credential now: email plus an argon2 hash.
+model User {
+  id           String  @id @default(cuid())
+  email        String  @unique
+  passwordHash String
+  name         String?
+
+  createdAt DateTime @default(now())
+
+  /// Percentage points a bucket may drift from target before the agents act.
+  driftThresholdPct Float @default(5)
+
+  /// Risk preset the current targets came from.
+  riskProfile String @default("balanced")
+
+  /// How far the agents may tilt targets on sentiment, in percentage points.
+  /// 0 disables the tilt entirely, which is the default — news never moves a
+  /// portfolio unless the user explicitly grants it that authority.
+  sentimentTiltPct Float @default(0)
+
+  /// Opt-in to unattended scheduled ticks.
+  autoRebalance Boolean @default(true)
+
+  transactions    Transaction[]
+  buckets         BucketAllocation[]
+  rebalanceEvents RebalanceEvent[]
+  resetTokens     PasswordResetToken[]
+}
+
+/// One row per user per ETF bucket: what they want (targetPct) and what they
+/// actually hold (balancePaise). Drift is the gap between the two.
+model BucketAllocation {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  /// Matches a BucketId in src/lib/buckets.ts.
+  bucketId     String
+  targetPct    Float
+  balancePaise Int   @default(0)
+
+  /// Exposure caps. The target must sit inside [minPct, maxPct], and a bucket
+  /// that drifts outside its band triggers a rebalance even when the drift
+  /// threshold has not been breached.
+  minPct Float @default(0)
+  maxPct Float @default(100)
+
+  @@unique([userId, bucketId])
+  @@index([userId])
+}
+
+model Transaction {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  merchant     String
+  category     String
+  amountPaise  Int
+  roundUpPaise Int
+  bucketId     String
+  createdAt    DateTime @default(now())
+
+  @@index([userId, createdAt])
+}
+
+/// Audit trail for the rebalancing agents. Written only when a drift breach
+/// actually moves money, so the history is a log of decisions, not of ticks.
+model RebalanceEvent {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  bucketId  String
+  beforePct Float
+  afterPct  Float
+  /// What tripped the agent, e.g. "drift-threshold-breach".
+  signal    String
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+}
+
+/// Waitlist signups and FAQ contact messages. One table, distinguished by
+/// `source`, so a form on a marketing page always lands somewhere real.
+model Enquiry {
+  id        String   @id @default(cuid())
+  email     String
+  message   String?
+  /// "pricing-waitlist" | "faq-contact"
+  source    String
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}
+
+/// One scheduled (or manual) agent tick. Written on every run, including runs
+/// that changed nothing, so "the agents are working" is an observable fact
+/// rather than a marketing claim.
+model AgentRun {
+  id     String  @id @default(cuid())
+  userId String?
+
+  /// "scheduled" | "manual"
+  trigger        String
+  rebalanced     Boolean @default(false)
+  eventsWritten  Int     @default(0)
+  sentimentScore Float?
+  /// Short human summary of what the tick concluded.
+  summary   String
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([userId, createdAt])
+}
+
+/// A pending password reset. The raw token is emailed and never stored — only
+/// its SHA-256 hash — so a leaked database cannot be used to seize accounts.
+/// Rows are single-use (`usedAt`) and short-lived (`expiresAt`).
+model PasswordResetToken {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  /// SHA-256 of the token that was emailed, hex-encoded.
+  tokenHash String   @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+/// Fixed-window rate limiting. Database-backed rather than in-memory because a
+/// serverless deployment runs many short-lived instances — an in-process
+/// counter there protects nothing, since each request may land somewhere new.
+model RateLimit {
+  /// Bucket being limited, e.g. "reset:you@example.com" or "login:1.2.3.4".
+  key String @id
+
+  count       Int      @default(0)
+  /// Start of the current window; a request after this + window resets count.
+  windowStart DateTime @default(now())
+
+  @@index([windowStart])
+}
