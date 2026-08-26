@@ -1,5 +1,10 @@
 # Pipdrift
 
+[![CI](https://github.com/SagnikBhowmik77/pipdrift/actions/workflows/ci.yml/badge.svg)](https://github.com/SagnikBhowmik77/pipdrift/actions/workflows/ci.yml)
+[![TypeScript](https://img.shields.io/badge/TypeScript-96%25-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Next.js 16](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs&logoColor=white)](https://nextjs.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-1f883d.svg)](LICENSE)
+
 **An open rebalancing engine for spare-change investing. Read it, fork it, run
 it yourself.**
 
@@ -26,6 +31,20 @@ registration that legally permits it.
 **New here? Follow [SETUP.md](SETUP.md)** - it walks through turning on a
 free sentiment model, keeping the agents running, and testing round-ups.
 Deploying? See [DEPLOYMENT.md](DEPLOYMENT.md).
+
+## Built with
+
+| | |
+| --- | --- |
+| Language | TypeScript 5 (strict) |
+| Framework | Next.js 16, App Router with Server Components |
+| UI | React 19, Tailwind CSS v4, Geist via `next/font` |
+| Database | Prisma 7 with SQLite locally, Postgres in production |
+| Auth | Auth.js v5, argon2id password hashing |
+| Graphics | Three.js for the sign-in scene, Canvas 2D fallback |
+| Sentiment | Any OpenAI-compatible provider, or the built-in lexicon |
+| Tests | Vitest, 115 unit and integration tests |
+| CI | GitHub Actions: schema drift, typecheck, lint, test, build |
 
 ## Run it
 
