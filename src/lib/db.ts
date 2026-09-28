@@ -54,6 +54,28 @@ function createClient(): PrismaClient {
   return new PrismaClient({ adapter: new PrismaBetterSqlite3({ url }) });
 }
 
-export const prisma = globalForPrisma.prisma ?? createClient();
+/**
+ * Constructed on first use, not on import.
+ *
+ * Building this at module scope meant that merely importing the module opened a
+ * client, so `next build` failed while collecting page data for routes that
+ * only touch the database at request time. A build should not need a reachable
+ * database, and a misconfigured connection string should surface on the first
+ * query rather than as an import-time crash with no route attached to it.
+ */
+function getClient(): PrismaClient {
+  const existing = globalForPrisma.prisma;
+  if (existing) return existing;
 
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+  const created = createClient();
+  if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = created;
+  return created;
+}
+
+export const prisma = new Proxy({} as PrismaClient, {
+  get(_target, property, receiver) {
+    const value = Reflect.get(getClient(), property, receiver) as unknown;
+    // Methods such as $transaction must stay bound to the real client.
+    return typeof value === "function" ? value.bind(getClient()) : value;
+  },
+});

@@ -7,7 +7,7 @@
 # so no application code changes between local and deployed.
 
 [build]
-  command = "prisma generate --schema prisma/schema.postgres.prisma && next build"
+  command = "node scripts/netlify-migrate.mjs && prisma generate --schema prisma/schema.postgres.prisma && next build"
 
 [build.environment]
   # Match the Node version the project is developed against.
