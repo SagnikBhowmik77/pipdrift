@@ -58,3 +58,6 @@ src/generated/
 .claude/
 .windsurf/
 .agents/
+
+# Local Netlify folder
+.netlify

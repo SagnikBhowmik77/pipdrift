@@ -29,8 +29,23 @@ function isPostgres(url: string): boolean {
   return /^postgres(ql)?:\/\//i.test(url);
 }
 
+/**
+ * Connection string, in order of preference.
+ *
+ * Netlify provisions its managed Postgres and injects NETLIFY_DATABASE_URL
+ * rather than DATABASE_URL, so a deployment that only read DATABASE_URL would
+ * fall through to the SQLite default and fail on the first query. DATABASE_URL
+ * still wins when set, so a self-hosted deployment or a local override behaves
+ * exactly as it did before.
+ */
+export function resolveDatabaseUrl(): string {
+  return (
+    process.env.DATABASE_URL ?? process.env.NETLIFY_DATABASE_URL ?? DEFAULT_URL
+  );
+}
+
 function createClient(): PrismaClient {
-  const url = process.env.DATABASE_URL ?? DEFAULT_URL;
+  const url = resolveDatabaseUrl();
 
   if (isPostgres(url)) {
     return new PrismaClient({ adapter: new PrismaPg({ connectionString: url }) });

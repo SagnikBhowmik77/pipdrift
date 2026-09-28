@@ -1,0 +1,22 @@
+# Netlify build configuration.
+#
+# The build generates the Prisma client against prisma/schema.postgres.prisma
+# rather than the default schema. Production runs on Postgres because a
+# serverless filesystem is ephemeral: a SQLite file there loses every write on
+# redeploy. src/lib/db.ts already picks its driver from the DATABASE_URL scheme,
+# so no application code changes between local and deployed.
+
+[build]
+  command = "prisma generate --schema prisma/schema.postgres.prisma && next build"
+
+[build.environment]
+  # Match the Node version the project is developed against.
+  NODE_VERSION = "22"
+  # The postinstall script generates against the SQLite schema, which would
+  # overwrite the Postgres client the build command produces.
+  PRISMA_SKIP_POSTINSTALL_GENERATE = "true"
+
+[[plugins]]
+  # Not pinned on purpose: Netlify updates the adapter per build so new Next
+  # releases keep working without a config change here.
+  package = "@netlify/plugin-nextjs"
